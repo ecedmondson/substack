@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "fault-tolerance-jargon"
+version = "0.1.0"
+description = "Code snippets from my substack \"Fault Tolerance\""
+authors = ["Emily Edmondson <ecedmondson@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^5.1.5"
+django-rest-framework = "^0.1.0"
+ruff = "^0.9.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
