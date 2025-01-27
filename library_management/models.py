@@ -17,7 +17,7 @@ class Book(models.Model):
     isbn = models.CharField(max_length=13, unique=True, blank=True, null=True)
     publication_date = models.DateField()
     catalogued = models.DateField()
-    genre = models.CharField()
+    genre = models.CharField(max_length=255)
 
 
 class BookLoan(models.Model):

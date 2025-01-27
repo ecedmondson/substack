@@ -11,8 +11,8 @@ class PatronAdmin(admin.ModelAdmin):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ("title", "author", "isbn", "publication_date", "genre")
-    search_fields = ("title", "author", "isbn")
+    list_display = ("title", "author_first_name", "author_last_name", "isbn", "publication_date", "genre")
+    search_fields = ("title", "author_last_name", "isbn")
     list_filter = ("genre", "publication_date")
 
 
@@ -24,7 +24,6 @@ class BookLoanAdmin(admin.ModelAdmin):
         "checked_out_on",
         "due_date",
         "book_returned",
-        "is_overdue",
     )
     search_fields = ("book__title", "patron__first_name", "patron__last_name")
-    list_filter = ("checked_out_on", "due_date", "returned_on", "is_overdue")
+    list_filter = ("checked_out_on", "due_date", "book_returned")
