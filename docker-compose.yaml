@@ -1,0 +1,53 @@
+version: '3.8'
+
+# https://docs.docker.com/samples/django/
+# https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
+services:
+  postgres:
+    image: postgres:14.3
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=honorificabilitudinitatibus
+      - POSTGRES_DB=fault_tolerance
+      # - POSTGRES_UP="psql -U dev fault_tolerance"
+      # - SQL_FROM_BASH="psql -U dev -d fault_tolerance -c"
+    networks:
+      - appnetwork
+  app:
+    build: .
+    working_dir: /code
+    command: ./start_django.sh
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=honorificabilitudinitatibus
+      - POSTGRES_DB=fault_tolerance
+      - SECRET_KEY=galactomyces
+      - DEBUG=1
+      - ALLOWED_HOSTS=0.0.0.0,127.0.0.1,localhost
+      - DATABASE_URL=postgres://dev:honorificabilitudinitatibus@postgres:5432/fault_tolerance
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/code
+    depends_on:
+      - postgres
+    links:
+      - postgres:postgres
+    networks:
+      - appnetwork
+    restart: always
+
+volumes:
+  db:
+    driver: local
+
+
+
+networks:
+  appnetwork:
+    driver: bridge
+
