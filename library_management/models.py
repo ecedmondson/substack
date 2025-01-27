@@ -10,6 +10,7 @@ class Patron(models.Model):
     membership_card_id = models.UUIDField()
 
 
+
 class Book(models.Model):
     title = models.CharField(max_length=255)
     author_first_name = models.CharField(max_length=255)
@@ -40,5 +41,5 @@ class BookLoan(models.Model):
     def book_return(self, return_date=None):
         """Marks the book as returned."""
         return_date = return_date or timezone.now()
-        self.returned_on = return_date
+        self.book_returned = return_date
         self.save(update_fields=["book_returned"])
