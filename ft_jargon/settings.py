@@ -78,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "dfr_auction.wsgi.application"
+WSGI_APPLICATION = "ft_jargon.wsgi.application"
 
 
 # Database

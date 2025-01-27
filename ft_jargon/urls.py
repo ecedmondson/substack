@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from library_management.api.urls import urlpatterns as library_management_urls
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    *library_management_urls,
 ]

@@ -12,7 +12,7 @@ class BookPagination(PageNumberPagination):
     max_page_size = 100
 
 
-class BookList(generics.ListAPIView):
+class BookListView(generics.ListAPIView):
     queryset = Book.objects.prefetch_related("bookloans").all()
     serializer_class = BookSerializer
     pagination_class = BookPagination
@@ -27,8 +27,8 @@ class BookList(generics.ListAPIView):
         queryset = self.get_queryset().filter(**queryset_filters)
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page)
+            serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-        serializer = self.get_serializer(queryset)
+        serializer = self.get_serializer(queryset, many=True)
 
         return Response(serializer.data)

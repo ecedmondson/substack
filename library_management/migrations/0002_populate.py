@@ -1,7 +1,12 @@
 import json
 from uuid import uuid4
+from datetime import datetime
 from django.db import migrations
 from django.utils.timezone import now, timedelta
+
+def parse_date(date_string):
+    return datetime.strptime(date_string, "%B %d, %Y").date()
+    
 books = [
     {
         "title": "Butter",
@@ -12,7 +17,7 @@ books = [
         "genre": "Mystery",
     },
     {
-        "title": "History",
+        "title": "The Story",
         "author_first_name": "Elsa",
         "author_last_name": "Morante",
         "isbb": "9781586420048",
@@ -98,12 +103,12 @@ def populate_db(apps, schema_editor):
     # Create books
     book_instances = {}
     for book_data in books:
-        book = Book.objects.create(
+        book, _ = Book.objects.get_or_create(
             title=book_data["title"],
             author_first_name=book_data["author_first_name"],
             author_last_name=book_data["author_last_name"],
             isbn=book_data["isbb"],
-            publication_date=book_data["publication_date"],
+            publication_date=parse_date(book_data["publication_date"]),
             catalogued=now().date(),
             genre=book_data["genre"],
         )
@@ -112,7 +117,7 @@ def populate_db(apps, schema_editor):
     # Create patrons
     patron_instances = {}
     for patron_data in patrons:
-        patron = Patron.objects.create(
+        patron, _ = Patron.objects.get_or_create(
             first_name=patron_data["first_name"],
             last_name=patron_data["last_name"],
             email=patron_data["email"],
@@ -124,25 +129,36 @@ def populate_db(apps, schema_editor):
     jj = patron_instances["jj.flewellen@cats.com"]
 
     # Loan 1: Returned
-    BookLoan.objects.create(
-        book=book_instances["Butter"],
+    BookLoan.objects.get_or_create(
+        book_id=book_instances["Butter"].id,
         patron=jj,
         due_date=now() - timedelta(days=15),
         book_returned=now() - timedelta(days=10),
     )
 
     # Loan 2: Overdue
-    BookLoan.objects.create(
-        book=book_instances["History"],
+    BookLoan.objects.get_or_create(
+        book_id=book_instances["The Story"].id,
         patron=jj,
         due_date=now() - timedelta(days=5),
     )
 
     # Loan 3: Currently checked out and not overdue
-    BookLoan.objects.create(
-        book=book_instances["Figuring"],
+    BookLoan.objects.get_or_create(
+        book_id=book_instances["Figuring"].id,
         patron=jj,
         due_date=now() + timedelta(days=10),
+    )
+    BookLoan.objects.get_or_create(
+        book_id=book_instances["Liars"].id,
+        patron=jj,
+        due_date=now() + timedelta(days=10),
+    )
+    BookLoan.objects.get_or_create(
+        book_id=book_instances["Mongrel"].id,
+        patron=jj,
+        due_date=now() + timedelta(days=10),
+    )
 
 class Migration(migrations.Migration):
     dependencies = [
