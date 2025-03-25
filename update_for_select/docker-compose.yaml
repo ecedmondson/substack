@@ -13,8 +13,6 @@ services:
       - POSTGRES_USER=dev
       - POSTGRES_PASSWORD=honorificabilitudinitatibus
       - POSTGRES_DB=fault_tolerance
-      # - POSTGRES_UP="psql -U dev fault_tolerance"
-      # - SQL_FROM_BASH="psql -U dev -d fault_tolerance -c"
     networks:
       - appnetwork
   app:
