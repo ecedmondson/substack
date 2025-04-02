@@ -1,5 +1,5 @@
 """
-WSGI config for ft_jargon project.
+WSGI config for update_for_select project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ft_jargon.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'update_for_select.settings')
 
 application = get_wsgi_application()

@@ -1,5 +1,5 @@
 """
-ASGI config for ft_jargon project.
+ASGI config for update_for_select project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ft_jargon.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'update_for_select.settings')
 
 application = get_asgi_application()
