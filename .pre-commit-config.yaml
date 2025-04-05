@@ -1,0 +1,43 @@
+repos:
+  # Ruff (all Python projects)
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.2.2
+    hooks:
+      - id: ruff
+        name: ruff (update_for_select)
+        files: ^update_for_select/
+      - id: ruff
+        name: ruff (sms_relay)
+        files: ^sms_relay/
+
+  # isort (all Python projects)
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        name: isort (update_for_select)
+        files: ^update_for_select/
+      - id: isort
+        name: isort (sms_relay)
+        files: ^sms_relay/
+
+  # flake8 (all Python projects)
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+        name: flake8 (update_for_select)
+        files: ^update_for_select/
+      - id: flake8
+        name: flake8 (sms_relay)
+        files: ^sms_relay/
+
+  # mypy (Python type hint projets)
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        name: mypy (sms_relay)
+        files: ^sms_relay/
+        additional_dependencies: [fastapi, pydantic]
+
