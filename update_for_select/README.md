@@ -45,4 +45,4 @@ loan = BookLoan.objets.create(book=book, patron=patron, due_date=datetime.now())
 
 ## Notes
 
-There is an intentional bug in the api. More information on the bug is in the library_management/README.md.
+There is an intentional bug in the api. More information on the bug is in the library_management/README.md. The point of this project is to show the bug, so I am unlikely to change it.
