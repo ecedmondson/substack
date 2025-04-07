@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fault-tolerance-jargon"
+name = "update_for_select"
 version = "0.1.0"
 description = "Code snippets from my substack \"Fault Tolerance\""
 authors = ["Emily Edmondson <ecedmondson@gmail.com>"]
