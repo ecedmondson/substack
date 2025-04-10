@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "sms_relay"
+version = "0.1.0"
+description = "I am a rock, I am an island."
+authors = ["Emily Edmondson"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.12"
+ipython = "^9.0.2"
+pydantic-settings = "^2.8.1"
+pydantic = "^2.11.2"
+aerich = "^0.8.2"
+tomlkit = "^0.13.2"
+click = "^8.1.8"
+uvicorn = "^0.34.0"
+requests = "^2.32.3"
+asyncpg = "^0.30.0"
+
+[tool.poetry.dependencies.tortoise-orm]
+extras = ["psycopg"]
+version = "^0.24.2"
+
+[tool.aerich]
+tortoise_orm = "settings.tortoise_settings.TORTOISE_ORM"
+location = "./database/migrations"
+src_folder = "./."
+
+[tool.poetry.scripts]
+shell = "sms_relay.shell:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,47 @@
+version: '3.8'
+
+# https://docs.docker.com/samples/django/
+# https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
+services:
+  postgres:
+    image: postgres:14.3
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=dontgetclose
+      - POSTGRES_DB=sms_relay
+    networks:
+      - appnetwork
+  app:
+    build: .
+    working_dir: /code
+    command: ./sms_relay/start.sh
+    environment:
+      - POSTGRES_PASSWORD=dontgetclose
+      - POSTGRES_NAME=sms_relay
+      - POSTGRES_HOST=postgres
+      - DEBUG=1
+      - ALLOWED_HOSTS=0.0.0.0,127.0.0.1,localhost
+      - DATABASE_URL=postgres://dev:dontgetclose@postgres:5432/sms_relay
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/code
+    depends_on:
+      - postgres
+    links:
+      - postgres:postgres
+    networks:
+      - appnetwork
+    restart: always
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  appnetwork:
+    driver: bridge
+
