@@ -14,32 +14,16 @@ class RouterSettings:
     def db_for_write(self, *args, **kwargs):
         return "default"
 
-TORTOISE_BASE = {
-        "connections": {"default": db_settings.url},
-    }
-
 TORTOISE_ORM = {
+    "connections": {"default": db_settings.url},
     "apps": {
         "models": {
             "models": model_settings.model_registry,
             "default_connection": "default",
         },
     },
-    **TORTOISE_BASE,
 }
 
-TORTOISE_CONFIG = {
-        **TORTOISE_BASE,
-    "apps": {
-        "models": {
-            "models": model_settings.project_models,
-            "default_connection": "default",
-        },
-    },
-        "routers": [RouterSettings()],
-        "use_tz": True,
-        "timezone": "UTC",
-    }
 async def init_tortoise(fastapi_app: FastAPI) -> None:
     register_tortoise(
         fastapi_app,

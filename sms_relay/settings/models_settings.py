@@ -2,7 +2,7 @@ class ModelSettings:
     @property
     def project_models(self):
        return [
-           "database.models.sms_forwarding.message",
+           "database.models.sms_forwarding",
        ]
 
     @property
