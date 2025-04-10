@@ -15,4 +15,6 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
 
 async def downgrade(db: BaseDBAsyncClient) -> str:
     return """
-        """
+        DROP TABLE IF EXISTS "message";
+        DROP INDEX IF EXISTS "idx_message_created_1cd580";
+    """

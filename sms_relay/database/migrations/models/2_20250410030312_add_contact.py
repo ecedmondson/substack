@@ -13,4 +13,5 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
 
 async def downgrade(db: BaseDBAsyncClient) -> str:
     return """
-        """
+        DROP TABLE IF EXISTS "contact";
+    """
