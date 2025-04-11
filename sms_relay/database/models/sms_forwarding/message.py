@@ -13,6 +13,9 @@ class Message(UUIDPrimaryKey, CreatedTimestamped):
     sender = fields.CharField(max_length=255, null=False)
     date = fields.CharField(max_length=35, null=False)
 
+    class Meta:
+        table = "message"
+
 class MessageRequest(TortoiseModelMixin):
     message: str
     sender: str
