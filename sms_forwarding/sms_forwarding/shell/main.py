@@ -1,7 +1,7 @@
 import click
 import IPython
 
-from sms_relay.shell.utils.import_models import import_all_models
+from sms_forwarding.shell.utils.import_models import import_all_models
 
 
 @click.command()

@@ -20,4 +20,4 @@ poetry run aerich upgrade
 
 # Finally, start the FastAPI server with hot-reloading enabled
 echo "Starting FastAPI server..."
-poetry run uvicorn sms_relay.main:app --host 0.0.0.0 --port 8000 --reload
+poetry run uvicorn sms_forwarding.main:app --host 0.0.0.0 --port 8000 --reload
