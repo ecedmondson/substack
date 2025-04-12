@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings
 
 
 class MyIphoneSettings(BaseSettings):
-    MY_IPHONE_SECRET_HEADER_KEY: SecretStr = SecretStr("X-Iphone-Secret")
+    MY_IPHONE_SECRET_HEADER_KEY: SecretStr = SecretStr("X-Iphone-API-Key")
     MY_IPHONE_SECRET_HEADER_VALUE: SecretStr = SecretStr("iphonesecretvalue")
 
     @property
