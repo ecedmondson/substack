@@ -37,9 +37,26 @@ class BookLoan(models.Model):
     def is_overdue(self):
         """Returns whether the book loan is overdue."""
         return self.book_returned is None and self.due_date < timezone.now()
+    
+    @property
+    def property_decorated_method(self):
+        return "The property"
+    
+    def method_with_no_args(self):
+        return "method with no args"
+    
+    def method_with_a_kwarg(self, my_kwarg_list=None):
+        my_kwarg_list = my_kwarg_list or ["kwarg"]
+        return "this is my list of kwargs: " + "\n\t-".join(my_kwarg_list)
 
     def book_return(self, return_date=None):
         """Marks the book as returned."""
         return_date = return_date or timezone.now()
         self.book_returned = return_date
         self.save(update_fields=["book_returned"])
+    
+    def serialize_me(self, number_to_add, number_to_subtract=None):
+        result = number_to_add + 7
+        if number_to_subtract:
+            return result - number_to_subtract
+        return result

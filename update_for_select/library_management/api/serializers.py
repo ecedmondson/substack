@@ -1,10 +1,11 @@
-from rest_framework import serializers
 from library_management.models import Book, BookLoan
+from rest_framework import serializers
 
 
 class BookLoanSerializer(serializers.ModelSerializer):
     checked_out_date = serializers.ReadOnlyField(source="checked_out_on")
     returned_date = serializers.ReadOnlyField(source="book_return")
+    #serialize_me = serializers.ReadOnlyField(source="serializer_me")
 
     class Meta:
         model = BookLoan
@@ -27,4 +28,5 @@ class BookSerializer(serializers.ModelSerializer):
             "publication_date",
             "genre",
             "loans",
+            #"serialize_me",
         )
