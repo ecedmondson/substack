@@ -7,8 +7,8 @@ repos:
         name: ruff (update_for_select)
         files: ^update_for_select/
       - id: ruff
-        name: ruff (sms_relay)
-        files: ^sms_relay/
+        name: ruff (sms_forwarding)
+        files: ^sms_forwarding/
 
   # isort (all Python projects)
   - repo: https://github.com/PyCQA/isort
@@ -18,8 +18,8 @@ repos:
         name: isort (update_for_select)
         files: ^update_for_select/
       - id: isort
-        name: isort (sms_relay)
-        files: ^sms_relay/
+        name: isort (sms_forwarding)
+        files: ^sms_forwarding/
 
   # autoflake8 (all Python projects)
   - repo: https://github.com/fsouza/autoflake8
@@ -29,15 +29,15 @@ repos:
         name: flake8 (update_for_select)
         files: ^update_for_select/
       - id: autoflake8
-        name: flake8 (sms_relay)
-        files: ^sms_relay/
+        name: flake8 (sms_forwarding)
+        files: ^sms_forwarding/
 
   # mypy (Python type hint projets)
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.8.0
     hooks:
       - id: mypy
-        name: mypy (sms_relay)
-        files: ^sms_relay/
+        name: mypy (sms_forwarding)
+        files: ^sms_forwarding/
         additional_dependencies: [fastapi, pydantic]
 

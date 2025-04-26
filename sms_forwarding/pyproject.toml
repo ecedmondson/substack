@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "sms_relay"
+name = "sms_forwarding"
 version = "0.1.0"
 description = "I am a rock, I am an island."
 authors = ["Emily Edmondson"]
@@ -29,7 +29,7 @@ location = "./database/migrations"
 src_folder = "./."
 
 [tool.poetry.scripts]
-shell = "sms_relay.shell:main"
+shell = "sms_forwarding.shell:main"
 
 [build-system]
 requires = ["poetry-core"]
