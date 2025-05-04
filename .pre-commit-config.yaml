@@ -9,6 +9,9 @@ repos:
       - id: ruff
         name: ruff (sms_forwarding)
         files: ^sms_forwarding/
+      - id: ruff
+        name: ruff (sms_relay)
+        files: ^sms_relay/
 
   # isort (all Python projects)
   - repo: https://github.com/PyCQA/isort
@@ -20,6 +23,9 @@ repos:
       - id: isort
         name: isort (sms_forwarding)
         files: ^sms_forwarding/
+      - id: isort
+        name: isort (sms_relay)
+        files: ^sms_relay/
 
   # autoflake8 (all Python projects)
   - repo: https://github.com/fsouza/autoflake8
@@ -31,6 +37,9 @@ repos:
       - id: autoflake8
         name: flake8 (sms_forwarding)
         files: ^sms_forwarding/
+      - id: autoflake8
+        name: flake8 (sms_relay)
+        files: ^sms_relay/
 
   # mypy (Python type hint projets)
   - repo: https://github.com/pre-commit/mirrors-mypy
@@ -39,5 +48,9 @@ repos:
       - id: mypy
         name: mypy (sms_forwarding)
         files: ^sms_forwarding/
+        additional_dependencies: [fastapi, pydantic]
+      - id: mypy
+        name: mypy (sms_relay)
+        files: ^sms_rlay/
         additional_dependencies: [fastapi, pydantic]
 
