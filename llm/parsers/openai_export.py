@@ -105,6 +105,9 @@ def load_and_parse_json(file_path: str, item_index: int = 0) -> List[Dict[str, U
 
 
 # Example usage:
-conversation = load_and_parse_json("conversations/conversations.json", item_index=5)
-for turn in conversation:
-    print(f"\n- {turn['role']}: \n{' '.join(turn['content'])}")
+for item_index in range(500):
+    if item_index not in [5, 10, 12, 30]:
+        with open(f"conversations/outputs/conversation_output_{item_index}.txt", 'a') as f:
+            conversation = load_and_parse_json("conversations/conversations.json", item_index=item_index)
+            for turn in conversation:
+                f.write(f"\n- {turn['role']}: \n{' '.join(turn['content'])}")

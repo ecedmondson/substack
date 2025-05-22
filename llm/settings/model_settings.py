@@ -3,6 +3,7 @@ import os
 
 from pathvalidate import sanitize_filename
 from pydantic_settings import BaseSettings
+from settings.interface_types import ModelInterfaceType
 
 from pydantic import Field
 
@@ -19,7 +20,7 @@ class ModelSettingsBase(BaseSettings):
     LOCAL_PATH: str = Field(default=os.environ.get('LLM_LOCAL_PATH', '/Users/new/Development/llms/'), allow_mutation=False)
     MODEL_NAME: str = ""
     ORGANIZATION_NAME: str = ""
-    MODEL_TYPE: str = Field(default="decoder")
+    MODEL_TYPE: ModelInterfaceType = Field(default="decoder")
 
     @property
     def save_path(self) -> str:
