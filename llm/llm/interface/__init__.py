@@ -7,6 +7,7 @@ import torch
 
 from settings.model_settings import ModelSettingsBase
 from settings.interface_types import ModelInterfaceType
+from llm.interface.utils import extract_text_from_pdf
 
 # seems interesting: https://docs.chainlit.io/data-persistence/overview
 class ModelInterface:
@@ -106,6 +107,28 @@ class Seq2SeqModelInterface(ModelInterface):
             all_summaries.extend(seq["generated_text"] for seq in sequences)
 
         return all_summaries
+
+class OllamaModelInterface(ModelInterface):
+    MODEL_TYPE = ModelInterfaceType.OLLAMA  # You’ll need to define this enum value
+
+    @cached_property
+    def model(self):
+        return AutoModelForCausalLM.from_pretrained(self.config.org_path)
+
+
+    def prompt(self, message: str):
+        chunks = self.chunks(message, max_tokens=500)  # conservative chunking for llama3
+        summaries = []
+        for chunk in chunks:
+            print("Getting summary...")
+            prompt_text = f"Summarize the following text:\n\n{chunk}"
+            summary = ollama_prompt(prompt_text, model=self.config.model_repo)  # model_repo holds "llama3" or similar
+            summaries.append(summary.strip())
+        return summaries
+
+    def summarize_pdf(self, pdf_path):
+        pdf_text = extract_text_from_pdf(pdf_path)
+        return self.prompt(pdf_text)
 
 def model_interface_factory(model_type: ModelInterfaceType) -> ModelInterface:
     return ModelInterface.MODEL_REGISTRY[model_type]
