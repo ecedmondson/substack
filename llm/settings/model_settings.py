@@ -23,6 +23,11 @@ class ModelSettingsBase(BaseSettings):
     MODEL_TYPE: ModelInterfaceType = Field(default="decoder")
 
     @property
+    def org_path(self) -> str:
+        return f"{self.ORGANIZATION_NAME}/{self.MODEL_NAME}"
+
+
+    @property
     def save_path(self) -> str:
         return f"{normalize_dir_name(self.LOCAL_PATH)}{sanitize_filename(self.MODEL_NAME)}"
     
