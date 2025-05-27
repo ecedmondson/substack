@@ -109,7 +109,7 @@ class Seq2SeqModelInterface(ModelInterface):
         return all_summaries
 
 class OllamaModelInterface(ModelInterface):
-    MODEL_TYPE = ModelInterfaceType.OLLAMA  # You’ll need to define this enum value
+    MODEL_TYPE = ModelInterfaceType.OLLAMA
 
     @cached_property
     def model(self):
@@ -117,12 +117,12 @@ class OllamaModelInterface(ModelInterface):
 
 
     def prompt(self, message: str):
-        chunks = self.chunks(message, max_tokens=500)  # conservative chunking for llama3
+        chunks = self.chunks(message, max_tokens=500)
         summaries = []
         for chunk in chunks:
             print("Getting summary...")
             prompt_text = f"Summarize the following text:\n\n{chunk}"
-            summary = ollama_prompt(prompt_text, model=self.config.model_repo)  # model_repo holds "llama3" or similar
+            summary = ollama_prompt(prompt_text, model=self.config.model_repo)
             summaries.append(summary.strip())
         return summaries
 
