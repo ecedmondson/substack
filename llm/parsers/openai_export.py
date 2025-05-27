@@ -8,14 +8,13 @@ class ImageMetadata(BaseModel):
     size_bytes: int
     width: int
     height: int
-    fovea: Union[str, None]
+    fovea: Union[int, None]
     metadata: dict
 
 class MessageContent(BaseModel):
-    parts: Union[list[str], list[ImageMetadata]]
-
-class MessageThoughts(BaseModel):
     content_type: str
+    content: Optional[str] = None
+    parts: Optional[Union[list[str], list[ImageMetadata]]] = None
     content: Optional[str] = None
     thoughts: Optional[list] = None
     source_analysis_msg_id: Optional[str] = None
@@ -24,7 +23,7 @@ class MessageAuthor(BaseModel):
     role: str
 
 class Message(BaseModel):
-    content: Union[MessageContent, MessageThoughts]
+    content: MessageContent
     author: MessageAuthor
 
 
@@ -79,7 +78,7 @@ def parse_conversation(mapping: Dict[str, MappingNode]) -> List[Dict[str, Union[
         content_parts = node.message.content.parts if node.message else ""
         conversation.append({
             "role": author_role,
-            "content": content_parts
+            "content": content_parts.asset_pointer if isinstance(content_parts, ImageMetadata) else content_parts or ""
         })
         if not node.children:
             break
@@ -94,8 +93,9 @@ def load_and_parse_json(file_path: str, item_index: int = 0) -> List[Dict[str, U
         raw_data = json.load(f)
 
     items = []
-    for item in raw_data:
-        items.append(ConversationItem.model_validate(item))
+    for ind, item in enumerate(raw_data):
+        validated = ConversationItem.model_validate(item)
+        items.append(validated)
 
     if not (0 <= item_index < len(items)):
         raise IndexError(f"item_index {item_index} out of range (0 to {len(items)-1})")
@@ -104,8 +104,8 @@ def load_and_parse_json(file_path: str, item_index: int = 0) -> List[Dict[str, U
     return parse_conversation(selected_item.mapping)
 
 
-# Example usage:
-for item_index in range(500):
+for item_index in range(9, 500):
+    print("Parsing item ", item_index)
     if item_index not in [5, 10, 12, 30]:
         with open(f"conversations/outputs/conversation_output_{item_index}.txt", 'a') as f:
             conversation = load_and_parse_json("conversations/conversations.json", item_index=item_index)
