@@ -12,8 +12,8 @@ export const MessagesProvider = ({ children }) => {
 
   const [selectedMessage, setSelectedMessage] = useState(null);
 
-  const selectMessage = useCallback((id) => {
-      setSelectedMessage(id);
+  const selectMessage = useCallback((item) => {
+      setSelectedMessage(item.id);
   }, [setSelectedMessage]);
 
   const deselectMessage = useCallback((id) => {

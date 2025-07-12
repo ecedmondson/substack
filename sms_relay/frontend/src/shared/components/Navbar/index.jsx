@@ -5,6 +5,7 @@ const Navbar = () => (
   <header className="navbar">
     <Link to="/">Home</Link>
     <Link to="/messages">Message</Link>
+    <Link to="/contacts">Contacts</Link>
     {/* Add more links here */}
   </header>
 );
