@@ -16,7 +16,7 @@ const MessageListSidebar = () => {
           <li
             key={msg.id}
             className={`message-sidebar-item${
-              msg.id === selectedMessage?.id ? ' selected' : ''
+              msg.id === selectedMessage ? ' selected' : ''
             }`}
             onClick={() => selectMessage(msg.id)}
           >

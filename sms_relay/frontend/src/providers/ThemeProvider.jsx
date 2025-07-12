@@ -5,20 +5,21 @@ import CssBaseline from '@mui/material/CssBaseline';
 const theme = createTheme({
   palette: {
     mode: 'light',
-    primary: { main: '#6200ea' },
-    secondary: { main: '#03dac6' },
+    primary: { main: '#3e7349' },
+    secondary: { main: '#4e5aaa' },
     error: { main: '#b00020' },
     background: {
-      default: '#f8f9fa',
-      paper: '#ffffff',
+      paper: '#f8f9fa',
+      default: '#deeae3',
+      contrast: '#eaf6ef',
     },
     text: {
       primary: '#212121',
       secondary: '#616161',
     },
     custom: {
-      accent: '#ffcc00',
-      border: '#e0e0e0',
+      accent: '#f6e3d1',
+      border: '#394a3c',
     },
   },
 });
@@ -32,6 +33,7 @@ const ThemeProvider = ({ children }) => {
       '--color-error': palette.error.main,
       '--color-background': palette.background.default,
       '--color-surface': palette.background.paper,
+      '--color-background-contrast': palette.background.contrast,
       '--color-text-primary': palette.text.primary,
       '--color-text-secondary': palette.text.secondary,
       '--color-border': palette.custom?.border || '#e0e0e0',

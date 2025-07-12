@@ -4,6 +4,7 @@ import './styles.less';
 const Navbar = () => (
   <header className="navbar">
     <Link to="/">Home</Link>
+    <Link to="/messages">Message</Link>
     {/* Add more links here */}
   </header>
 );
