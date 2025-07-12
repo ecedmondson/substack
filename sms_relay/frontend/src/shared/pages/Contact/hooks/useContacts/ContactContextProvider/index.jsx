@@ -11,9 +11,9 @@ export const ContactProvider = ({ children }) => {
   } = useContactList();
 
   const [selectedContact, setSelectedContact] = useState(null);
+  const [isEditing, setIsEditing] = useState(null);
 
   const selectContact = useCallback((item) => {
-    console.log('item', item);
       setSelectedContact(item.id);
   }, [setSelectedContact]);
 
@@ -21,6 +21,13 @@ export const ContactProvider = ({ children }) => {
       setSelectedContact(null);
   }, [setSelectedContact]);
 
+  const startEditing = useCallback(() => {
+    setIsEditing(true);
+  }, [setIsEditing]);
+
+  const stopEditing = useCallback(() => {
+    setIsEditing(false);
+  }, [setIsEditing]);
 
   const value = useMemo(() => {
     return {
@@ -30,6 +37,9 @@ export const ContactProvider = ({ children }) => {
       selectContact,
       selectedContact,
       deselectContact,
+      isEditing,
+      startEditing,
+      stopEditing,
     };
   }, [
     contactList,
@@ -38,6 +48,9 @@ export const ContactProvider = ({ children }) => {
     selectContact,
     selectedContact,
     deselectContact,
+    isEditing,
+    startEditing,
+    stopEditing,
   ]);
   return (
     <ContactContext.Provider value={value}>

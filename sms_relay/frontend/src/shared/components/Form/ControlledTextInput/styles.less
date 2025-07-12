@@ -1,0 +1,13 @@
+.container {
+    container-type: inline-size;
+  }
+  
+  .borderOverflow {
+    margin: -1px;
+  
+    @container (width <= 550px) {
+      margin: 0;
+      width: 100%;
+    }
+  }
+  
