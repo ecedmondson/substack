@@ -36,7 +36,6 @@ class Contact(DeclarativeBase):
     phone_numbers: Mapped[List["PhoneNumber"]] = relationship('PhoneNumber', back_populates='contact')
     messages: Mapped[List["ForwardedMessage"]] = relationship('ForwardedMessage', back_populates='contact')
 
-
 class ContactShape(PydanticBase):
     first_name: Optional[str]
     last_name: Optional[str]

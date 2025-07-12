@@ -29,3 +29,7 @@ class MessageResponse(UUIDPrimaryKeyPydanticMixin, CreatedTimestampedPydanticMix
     message: str
     date: str
     contact: ContactShape
+
+class MessageListResponse(UUIDPrimaryKeyPydanticMixin):
+    message: str
+    contact: ContactShape
