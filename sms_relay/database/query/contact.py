@@ -5,6 +5,7 @@ from database.models.forwarding.contact import Contact, PhoneNumber
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+
 def update_phone_numbers(session, contact, phone_numbers_data):
     existing_numbers_map = {pn.number: pn for pn in contact.phone_numbers}
 

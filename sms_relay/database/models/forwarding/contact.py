@@ -1,14 +1,12 @@
 from typing import List, Optional
 from uuid import UUID as UUIDTyping
-from uuid import uuid4
 
-
-from database.models.mixins.pydantic_base import PydanticBase
 from database.models.base import DeclarativeBase
+from database.models.mixins.primary_key import (UUIDPrimaryKey,
+                                                UUIDPrimaryKeyPydanticMixin)
+from database.models.mixins.pydantic_base import PydanticBase
 from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database.models.mixins.primary_key import (
-                                                UUIDPrimaryKey, UUIDPrimaryKeyPydanticMixin)
 
 
 class PhoneNumber(DeclarativeBase, UUIDPrimaryKey):
