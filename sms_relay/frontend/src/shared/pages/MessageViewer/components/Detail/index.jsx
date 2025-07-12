@@ -1,28 +1,37 @@
-import React from 'react';
-
 import { useMessageDetail } from '~/api/message';
+import { useMessages } from '../../hooks/useMessages';
+import ErrorMessage from '~/shared/components/ErrorMessage';
+import NoData from '~/shared/components/NoData';
 import LoadingSpinner from '~/shared/components/Loader';
 
-const MessageDetailViewer = ({ messageId, setError }) => {
+const MessageDetailViewer = () => {
   const {
-    data,
-    isLoading,
-    isError,
-    error,
-  } = useMessageDetail(messageId, { enabled: !!messageId });
+    selectedMessage,
+    deselectMessage,
+  } = useMessages();
+  const {
+    data: messageData,
+    isLoading: messageLoading,
+    isError: messageError,
+  } = useMessageDetail(selectedMessage);
 
-  React.useEffect(() => {
-    if (isError) setError(error);
-  }, [isError, error, setError]);
+  if(!selectedMessage) {
+    return <NoData message={'No message selected.'}/>
+  }
 
-  if (!messageId) return <p style={{ padding: '1rem' }}>Select a message from the list</p>;
-  if (isLoading) return <LoadingSpinner message="Loading message..." />;
+  if(selectedMessage && messageLoading) {
+    return <LoadingSpinner />
+  }
+
+  if(selectedMessage && messageError) {
+    return <ErrorMessage />
+  }
 
   return (
     <div style={{ padding: '1rem' }}>
       <h2>Message Detail</h2>
-      <p><strong>ID:</strong> {data.id}</p>
-      <p><strong>Message:</strong> {data.message}</p>
+      <p><strong>ID:</strong> {messageData.id}</p>
+      <p><strong>Message:</strong> {messageData.message}</p>
     </div>
   );
 };

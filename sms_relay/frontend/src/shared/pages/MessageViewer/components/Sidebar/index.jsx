@@ -1,21 +1,22 @@
-import React from 'react';
+import './styles.less';
+import { useMessages } from '../../hooks/useMessages';
 
-const MessageListSidebar = ({ messages, selectedId, onSelect }) => {
+const MessageListSidebar = () => {
+  const {       
+    messagesList,
+    selectMessage,
+  } = useMessages();
   return (
-    <div style={{ width: 250, borderRight: '1px solid #ccc', overflowY: 'auto', height: '100vh' }}>
-      <h3 style={{ padding: '1rem' }}>Messages</h3>
-      <ul style={{ listStyle: 'none', padding: 0 }}>
-        {messages.map((msg) => (
+    <div className="message-sidebar">
+      <h3 className="message-sidebar-title">Messages</h3>
+      <ul className="message-sidebar-list">
+        {messagesList.map((msg) => (
           <li
             key={msg.id}
-            onClick={() => onSelect(msg.id)}
-            style={{
-              padding: '0.5rem 1rem',
-              cursor: 'pointer',
-              backgroundColor: msg.id === selectedId ? '#eee' : 'transparent',
-            }}
+            className={`message-sidebar-item${msg.id === selectedId ? ' selected' : ''}`}
+            onClick={() => selectMessage(msg.id)}
           >
-            {msg.message.slice(0, 30)}{/* preview snippet */}
+            {msg.message.slice(0, 30)}
           </li>
         ))}
       </ul>

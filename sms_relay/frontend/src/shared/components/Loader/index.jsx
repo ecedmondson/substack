@@ -1,11 +1,12 @@
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import './styles.less';
+
 const LoadingSpinner = ({ message = 'Loading...' }) => (
-  <div style={{
-    padding: '2rem',
-    textAlign: 'center',
-    fontSize: '1.2rem',
-  }}>
-    <span role="status" aria-live="polite">{message}</span>
-  </div>
+  <Box className="loading-spinner">
+    <CircularProgress />
+    {message && <div className="loading-spinner-message">{message}</div>}
+  </Box>
 );
 
 export default LoadingSpinner;

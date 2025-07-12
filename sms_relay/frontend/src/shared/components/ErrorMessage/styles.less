@@ -1,19 +1,20 @@
-.error-message {
-    background-color: #fdecea;
-    color: #b00020;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 4px;
-    position: relative;
-  }
-  
-  .error-message button {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    background: transparent;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-  }
-  
+.error-banner {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-background);
+  color: var(--color-error);
+  padding: 0.75rem 1rem;
+  border: 1px solid #f5c2c7;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin: 1rem 0;
+}
+
+.error-icon {
+  font-size: 1.5rem;
+  margin-right: 0.75rem;
+}
+
+.error-text {
+  flex: 1;
+}
