@@ -1,18 +1,19 @@
 from typing import List, Optional
-from uuid import UUID as UUIDTyping, uuid4
+from uuid import UUID as UUIDTyping
+from uuid import uuid4
 
+
+from database.models.mixins.pydantic_base import PydanticBase
+from database.models.base import DeclarativeBase
 from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from database.models.mixins.primary_key import UUIDPrimaryKey, UUIDPrimaryKeyPydanticMixin
-from database.models.base import DeclarativeBase
-from database.models.mixins.pydantic_base import PydanticBase
+from database.models.mixins.primary_key import (
+                                                UUIDPrimaryKey, UUIDPrimaryKeyPydanticMixin)
 
 
-class PhoneNumber(DeclarativeBase):
+class PhoneNumber(DeclarativeBase, UUIDPrimaryKey):
     __tablename__ = 'phone_number'
 
-    id: Mapped[UUIDTyping] = mapped_column(primary_key=True, default=uuid4)
     number: Mapped[str] = mapped_column(String(15), nullable=False)
     contact_id: Mapped[UUIDTyping] = mapped_column(ForeignKey('contact.id'), nullable=False)
 
@@ -25,10 +26,9 @@ class PhoneNumberShape(PydanticBase):
     number: str
 
 
-class Contact(DeclarativeBase):
+class Contact(DeclarativeBase, UUIDPrimaryKey):
     __tablename__ = 'contact'
 
-    id: Mapped[UUIDTyping] = mapped_column(primary_key=True, default=uuid4)
     first_name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     last_name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     note: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
@@ -36,8 +36,10 @@ class Contact(DeclarativeBase):
     phone_numbers: Mapped[List["PhoneNumber"]] = relationship('PhoneNumber', back_populates='contact')
     messages: Mapped[List["ForwardedMessage"]] = relationship('ForwardedMessage', back_populates='contact')
 
-class ContactShape(PydanticBase):
+class ContactShape(UUIDPrimaryKeyPydanticMixin):
     first_name: Optional[str]
     last_name: Optional[str]
     note: Optional[str]
     phone_numbers: Optional[List[PhoneNumberShape]] = None
+
+

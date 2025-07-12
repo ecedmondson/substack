@@ -1,8 +1,40 @@
 from typing import Optional
-from database.models.forwarding.contact import Contact, PhoneNumber
+from uuid import UUID
 
+from database.models.forwarding.contact import Contact, PhoneNumber
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+
+def update_phone_numbers(session, contact, phone_numbers_data):
+    existing_numbers_map = {pn.number: pn for pn in contact.phone_numbers}
+
+    updated_phone_numbers = []
+
+    for pn_data in phone_numbers_data:
+        number = pn_data.get('number')
+        if number in existing_numbers_map:
+            # Update existing phone number object (if you have more fields)
+            phone_number_obj = existing_numbers_map[number]
+            # For example, update other fields here if needed
+        else:
+            # Create new phone number with contact_id
+            phone_number_obj = PhoneNumber(
+                number=number,
+                contact_id=contact.id,
+            )
+            session.add(phone_number_obj)
+
+        updated_phone_numbers.append(phone_number_obj)
+
+    # Remove phone numbers not in the new list
+    for pn in contact.phone_numbers:
+        if pn.number not in [p['number'] for p in phone_numbers_data]:
+            session.delete(pn)
+
+    # Replace contact.phone_numbers list to reflect current state
+    contact.phone_numbers = updated_phone_numbers
+
+
 
 class PhoneNumberQueryService:
     @classmethod
@@ -24,19 +56,58 @@ class ContactQueryService:
         return session.get(Contact, pkid)
 
     @classmethod
-    def update(
-        cls, session: Session, pkid: UUID, updated_fields: dict
-    ) -> Optional[Contact]:
-        contact = cls.by_pkid(session, pkid)
+    def update(cls, session: Session, contact_id: str, update_data: dict) -> Optional[Contact]:
+        contact = session.get(Contact, contact_id)
         if not contact:
             return None
 
-        for field, value in updated_fields.items():
-            setattr(contact, field, value)
+        # Update simple contact fields (first_name, last_name, note)
+        simple_fields = ['first_name', 'last_name', 'note']
+        for field in simple_fields:
+            if field in update_data:
+                setattr(contact, field, update_data[field])
+
+        # Handle phone_numbers update
+        if 'phone_numbers' in update_data:
+            incoming_phone_numbers = update_data['phone_numbers']
+            existing_numbers_map = {pn.number: pn for pn in contact.phone_numbers}
+
+            updated_phone_numbers = []
+
+            for pn_data in incoming_phone_numbers:
+                number = pn_data.get('number')
+                if not number:
+                    continue  # skip invalid entry
+
+                if number in existing_numbers_map:
+                    # Optionally update existing phone number fields here
+                    phone_number_obj = existing_numbers_map[number]
+                else:
+                    # Create new phone number with contact_id
+                    phone_number_obj = PhoneNumber(
+                        number=number,
+                        contact_id=contact.id,
+                    )
+                    session.add(phone_number_obj)
+
+                updated_phone_numbers.append(phone_number_obj)
+
+            # Remove phone numbers not present in incoming data
+            for pn in list(contact.phone_numbers):
+                if pn.number not in [p['number'] for p in incoming_phone_numbers]:
+                    session.delete(pn)
+
+            # Replace the phone_numbers relationship list with updated list
+            contact.phone_numbers = updated_phone_numbers
+
+        # DEBUG LOG: print all phone numbers before commit
+        for p in contact.phone_numbers:
+            print(f"PhoneNumber id={p.id} number={p.number} contact_id={p.contact_id}")
 
         session.commit()
         session.refresh(contact)
         return contact
+
 
     @classmethod
     def create(cls, session: Session, contact_data: dict) -> Contact:

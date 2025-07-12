@@ -1,16 +1,15 @@
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, Text, String
 from uuid import UUID as UUIDTyping
-from typing import List
 
+from database.models.base import DeclarativeBase
+from database.models.forwarding.contact import ContactShape
 from database.models.mixins.created_timestamped import (
     CreatedTimestamped, CreatedTimestampedPydanticMixin)
 from database.models.mixins.primary_key import (UUIDPrimaryKey,
                                                 UUIDPrimaryKeyPydanticMixin)
-from database.models.forwarding.contact import ContactShape
-from pydantic import BaseModel
-from database.models.base  import DeclarativeBase
 from database.models.mixins.pydantic_base import PydanticBase
+from sqlalchemy import ForeignKey, String, Text
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 
 class ForwardedMessage(DeclarativeBase, UUIDPrimaryKey, CreatedTimestamped):
     __tablename__ = "forwarded_message"

@@ -1,10 +1,11 @@
 from uuid import UUID
 
-from database.models.forwarding.message import ForwardedMessage, MessageRequest
 from database.models.forwarding.contact import Contact
+from database.models.forwarding.message import ForwardedMessage, MessageRequest
 from database.query.contact import ContactQueryService
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+
 
 class ForwardedMessageQueryService:
     @classmethod
