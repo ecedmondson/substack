@@ -2,10 +2,12 @@ import './styles.less';
 import { useMessages } from '../../hooks/useMessages';
 
 const MessageListSidebar = () => {
-  const {       
+  const {
     messagesList,
     selectMessage,
+    selectedMessage,
   } = useMessages();
+
   return (
     <div className="message-sidebar">
       <h3 className="message-sidebar-title">Messages</h3>
@@ -13,10 +15,16 @@ const MessageListSidebar = () => {
         {messagesList.map((msg) => (
           <li
             key={msg.id}
-            className={`message-sidebar-item${msg.id === selectedId ? ' selected' : ''}`}
+            className={`message-sidebar-item${
+              msg.id === selectedMessage?.id ? ' selected' : ''
+            }`}
             onClick={() => selectMessage(msg.id)}
           >
-            {msg.message.slice(0, 30)}
+            <div className="msg-snippet">{msg.message.slice(0, 60)}</div>
+            <div className="msg-meta">
+              <span>{msg.contact?.first_name ?? 'Unknown'}</span>
+              <span className="msg-date">{msg.date}</span>
+            </div>
           </li>
         ))}
       </ul>

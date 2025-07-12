@@ -1,0 +1,53 @@
+.message-detail {
+    padding: 2rem;
+    height: 100%;
+    width: 95%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: var(--color-background);
+  }
+  
+  .message-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    h2 {
+      margin: 0;
+    }
+  
+    .back-button {
+      padding: 0.4rem 0.8rem;
+      background-color: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: var(--color-surface);
+      }
+    }
+  }
+  
+  .message-card,
+  .contact-card {
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background-color: var(--color-background);
+  
+    p {
+      margin: 0.4rem 0;
+      line-height: 1.4;
+    }
+  }
+  
+  .contact-card h3 {
+    margin-bottom: 0.6rem;
+    font-size: 1.1rem;
+  }
+  

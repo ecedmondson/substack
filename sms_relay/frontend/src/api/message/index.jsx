@@ -5,6 +5,7 @@ const API_BASE = '/api/forwarding';
 
 // Helper: GET JSON
 async function getJson(url) {
+  console.log(url);
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Error fetching ${url}: ${res.statusText}`);
   return res.json();
@@ -30,8 +31,8 @@ async function getJson(url) {
 
 export function useMessagesList(options = {}) {
     return useQuery({
-      queryKey: ['messages'],
-      queryFn: () => getJson(`${API_BASE}/messages`),
+      queryKey: ['message'],
+      queryFn: () => getJson(`${API_BASE}/message`),
       ...options,
     });
   }
