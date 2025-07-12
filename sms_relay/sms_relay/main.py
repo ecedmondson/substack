@@ -1,3 +1,4 @@
+from api.routes.contact import contact_router
 from api.routes.sms_forwarding import (forwarding_router,
                                        verify_my_iphone_router)
 from fastapi import FastAPI
@@ -18,3 +19,4 @@ app.add_middleware(
 
 app.include_router(forwarding_router)
 app.include_router(verify_my_iphone_router)
+app.include_router(contact_router)
