@@ -3,7 +3,9 @@ from uuid import UUID
 
 from api.base import make_router_prefix_pattern
 from api.security.verify_my_iphone import verify_my_iphone_request
-from database.models.forwarding.message import MessageRequest, MessageResponse
+from database.models.forwarding.message import (MessageListResponse,
+                                                MessageRequest,
+                                                MessageResponse)
 from database.query.base import get_db
 from database.query.message import ForwardedMessageQueryService
 from fastapi import APIRouter, Depends
@@ -33,6 +35,8 @@ def iphone_automation_hook(
 def message_detail(id: UUID, session = Depends(get_db)) -> MessageResponse:
     return MessageResponse.model_validate(ForwardedMessageQueryService.by_pkid(session, id))
 
-@forwarding_router.get("/message", response_model=List[MessageResponse])
-def message_list(session: Session = Depends(get_db)) -> List[MessageResponse]:
-    return MessageResponse.model_validate(ForwardedMessageQueryService.all(session))
+@forwarding_router.get("/message", response_model=List[MessageListResponse])
+def message_list(session: Session = Depends(get_db)) -> List[MessageListResponse]:
+    return [
+        MessageListResponse.model_validate(message) for message in ForwardedMessageQueryService.all(session)
+    ]
