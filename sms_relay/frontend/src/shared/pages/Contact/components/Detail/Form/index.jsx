@@ -4,11 +4,12 @@ import ControlledTextAreaInput from '~/shared/components/Form/ControlledTextArea
 import '../styles.less';
 import { FormProvider } from 'react-hook-form';
 import useContactForm from '../../../hooks/useContactForm';
-import { useForm } from 'react-hook-form';
+
 
 const FormContent = ( { save }) => {
     return (
-        <div>
+        <div className="contact-card">
+        <div className="form-inputs">
         <ControlledTextInput
           name='first_name'
           label='First Name'
@@ -22,9 +23,10 @@ const FormContent = ( { save }) => {
         name='note'
         label='Note'
       />
-        <div className="buttons-container">
+    <div className="buttons-container">
           <button onClick={save} className="back-button">Save</button>
         </div>
+      </div>
       </div>
     )
 
@@ -53,6 +55,7 @@ const ContactDetailForm = ({ contact }) => {
           <button onClick={stopEditing} className="back-button">← Stop Editing</button>
         </div>
       </div>
+      <div className='contact-form'>
       <FormProvider {...formMethods}>
           <FormContent save={save} />
       </FormProvider>
@@ -66,6 +69,7 @@ const ContactDetailForm = ({ contact }) => {
               ))
             : <li>—</li>}
         </ul>
+      </div>
       </div>
     </div>
   );
