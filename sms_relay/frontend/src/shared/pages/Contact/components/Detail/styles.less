@@ -1,0 +1,102 @@
+.contact-detail {
+    padding: 1rem;
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+    height: 100%;
+    overflow-y: auto;
+  
+    .contact-detail-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+
+      .buttons-container {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          gap: 2px;
+      }
+  
+      h2 {
+        margin: 0;
+        font-weight: 700;
+        color: var(--color-primary);
+      }
+  
+      .back-button, .edit-button {
+        padding: 0.4rem 0.8rem;
+        background-color: var(--color-primary);
+        color:var(--color-text-primary);
+        border: none;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        cursor: pointer;
+    
+        &:hover {
+          background-color: var(--color-background-contrast);
+          border: 1px solid var(--color-border);
+        }
+      }
+    }
+    .contact-form {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: 10px;
+
+        .back-button {
+            padding: 0.4rem 0.8rem;
+            background-color: var(--color-primary);
+            color:var(--color-text-primary);
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        
+            &:hover {
+              background-color: var(--color-background-contrast);
+              border: 1px solid var(--color-border);
+            }
+          }
+    
+        .contact-card {
+        background-color: var(--color-background);
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: var(--shadow-sm);
+
+        .form-inputs {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            gap: 10px;
+        }
+    
+        p {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+    
+            strong {
+            color: var(--color-text-secondary);
+            }
+        }
+    
+        ul {
+            margin: 0.5rem 0 0 1rem;
+            padding: 0;
+            list-style-type: disc;
+    
+            li {
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+            color: var(--color-text-primary);
+            }
+        }
+        }
+    }
+  }
+  

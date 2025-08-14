@@ -30,8 +30,8 @@ async function getJson(url) {
 
 export function useMessagesList(options = {}) {
     return useQuery({
-      queryKey: ['messages'],
-      queryFn: () => getJson(`${API_BASE}/messages`),
+      queryKey: ['message'],
+      queryFn: () => getJson(`${API_BASE}/message`),
       ...options,
     });
   }

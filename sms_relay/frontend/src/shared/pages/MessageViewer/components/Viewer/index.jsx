@@ -1,20 +1,13 @@
-import React, { useState } from 'react';
-import { useMessagesList } from '~/api/message';
+
 import MessageListSidebar from '../Sidebar';
 import MessageDetailViewer from '../Detail';
+import './styles.less';
 
-const MessageViewer = ({ setError }) => {
-  const { data: messages = [] } = useMessagesList(); // uses cache
-  const [selectedId, setSelectedId] = useState(messages?.[0]?.id || null);
-
+const MessageViewer = () => {
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      <MessageListSidebar
-        messages={messages}
-        selectedId={selectedId}
-        onSelect={setSelectedId}
-      />
-      <MessageDetailViewer messageId={selectedId} setError={setError} />
+    <div className="message-viewer">
+      <MessageListSidebar />
+      <MessageDetailViewer />
     </div>
   );
 };

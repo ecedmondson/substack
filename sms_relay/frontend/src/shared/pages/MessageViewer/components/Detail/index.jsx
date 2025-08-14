@@ -1,28 +1,48 @@
-import React from 'react';
-
 import { useMessageDetail } from '~/api/message';
+import { useMessages } from '../../hooks/useMessages';
+import ErrorMessage from '~/shared/components/ErrorMessage';
+import NoData from '~/shared/components/NoData';
 import LoadingSpinner from '~/shared/components/Loader';
+import './styles.less';
 
-const MessageDetailViewer = ({ messageId, setError }) => {
+const MessageDetailViewer = () => {
   const {
-    data,
+    selectedMessage,
+    deselectMessage,
+  } = useMessages();
+
+  const {
+    data: messageData,
     isLoading,
     isError,
-    error,
-  } = useMessageDetail(messageId, { enabled: !!messageId });
+  } = useMessageDetail(selectedMessage);
 
-  React.useEffect(() => {
-    if (isError) setError(error);
-  }, [isError, error, setError]);
+  if (!selectedMessage) return <NoData message="No message selected." />;
+  if (isLoading) return <LoadingSpinner />;
+  if (isError) return <ErrorMessage />;
 
-  if (!messageId) return <p style={{ padding: '1rem' }}>Select a message from the list</p>;
-  if (isLoading) return <LoadingSpinner message="Loading message..." />;
+  const { id, message, date, created, contact } = messageData;
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h2>Message Detail</h2>
-      <p><strong>ID:</strong> {data.id}</p>
-      <p><strong>Message:</strong> {data.message}</p>
+    <div className="message-detail">
+      <div className="message-detail-header">
+        <h2>Message Detail</h2>
+        <button onClick={deselectMessage} className="back-button">← Back</button>
+      </div>
+
+      <div className="message-card">
+        <p><strong>ID:</strong> {id}</p>
+        <p><strong>Message:</strong> {message}</p>
+        <p><strong>Date:</strong> {date}</p>
+        <p><strong>Created:</strong> {new Date(created).toLocaleString()}</p>
+      </div>
+
+      <div className="contact-card">
+        <h3>Contact Info</h3>
+        <p><strong>Name:</strong> {contact.first_name || 'Unknown'}</p>
+        <p><strong>Note:</strong> {contact.note || 'None'}</p>
+        <p><strong>Phone:</strong> {contact.phone_numbers?.[0]?.number || '—'}</p>
+      </div>
     </div>
   );
 };
