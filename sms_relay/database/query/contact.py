@@ -4,7 +4,7 @@ from uuid import UUID
 from database.models.forwarding.contact import Contact, PhoneNumber
 from database.query.contact_rule_config import ContactRuleConfigQueryService
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 
 def update_phone_numbers(session, contact, phone_numbers_data):
@@ -54,8 +54,17 @@ class ContactQueryService:
         return session.execute(select(Contact)).scalars().all()
 
     @classmethod
-    def by_pkid(cls, session: Session, pkid: UUID) -> Optional[Contact]:
-        return session.get(Contact, pkid)
+    def by_pkid(cls, session: Session, pkid: UUID, with_config: bool = True) -> Optional[Contact]:
+        query = session.query(Contact)
+
+        if with_config:
+            query = query.options(
+                selectinload(Contact.rules)
+                .selectinload("rule_links")
+                .selectinload("rule")
+            )
+
+        return query.filter(Contact.id == pkid).one_or_none()
 
     @classmethod
     def update(cls, session: Session, contact_id: str, update_data: dict) -> Optional[Contact]:

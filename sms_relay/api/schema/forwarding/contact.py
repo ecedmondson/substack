@@ -3,6 +3,7 @@ from uuid import UUID as UUIDTyping
 
 from api.schema.mixins.primary_key import UUIDPrimaryKeyPydanticMixin
 from api.schema.pydantic_base import PydanticBase
+from api.schema.relay.rule import ContactRuleConfigShape
 
 
 class PhoneNumberShape(PydanticBase):
@@ -16,5 +17,6 @@ class ContactShape(UUIDPrimaryKeyPydanticMixin):
     last_name: Optional[str]
     note: Optional[str]
     phone_numbers: Optional[List[PhoneNumberShape]] = None
+    rules: Optional[List[ContactRuleConfigShape]] = None
 
 
