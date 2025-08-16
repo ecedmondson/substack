@@ -2,6 +2,7 @@ from typing import Optional
 from uuid import UUID
 
 from database.models.forwarding.contact import Contact, PhoneNumber
+from database.query.contact_rule_config import ContactRuleConfigQueryService
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -114,6 +115,7 @@ class ContactQueryService:
     def create(cls, session: Session, contact_data: dict) -> Contact:
         contact = Contact(**contact_data)
         session.add(contact)
+        ContactRuleConfigQueryService.add_to_session(session, contact)
         session.commit()
         session.refresh(contact)
         return contact

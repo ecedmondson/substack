@@ -2,9 +2,7 @@ from typing import List, Optional
 from uuid import UUID as UUIDTyping
 
 from database.models.base import DeclarativeBase
-from database.models.mixins.primary_key import (UUIDPrimaryKey,
-                                                UUIDPrimaryKeyPydanticMixin)
-from database.models.mixins.pydantic_base import PydanticBase
+from database.models.mixins.primary_key import UUIDPrimaryKey
 from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -16,12 +14,6 @@ class PhoneNumber(DeclarativeBase, UUIDPrimaryKey):
     contact_id: Mapped[UUIDTyping] = mapped_column(ForeignKey('contact.id'), nullable=False)
 
     contact: Mapped["Contact"] = relationship('Contact', back_populates='phone_numbers')
-
-
-class PhoneNumberShape(PydanticBase):
-    id: Optional[UUIDTyping] = None
-    contact_id: Optional[UUIDTyping] = None
-    number: str
 
 
 class Contact(DeclarativeBase, UUIDPrimaryKey):
@@ -39,11 +31,3 @@ class Contact(DeclarativeBase, UUIDPrimaryKey):
         lazy="selectin",
         cascade="all, delete-orphan",
     )
-
-class ContactShape(UUIDPrimaryKeyPydanticMixin):
-    first_name: Optional[str]
-    last_name: Optional[str]
-    note: Optional[str]
-    phone_numbers: Optional[List[PhoneNumberShape]] = None
-
-

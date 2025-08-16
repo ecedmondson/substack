@@ -2,7 +2,7 @@ from typing import List
 from uuid import UUID
 
 from api.base import make_router_prefix_pattern
-from database.models.forwarding.contact import ContactShape
+from api.schema.forwarding.contact import ContactShape
 from database.query.base import get_db
 from database.query.contact import ContactQueryService
 from fastapi import APIRouter, Depends, HTTPException
@@ -27,6 +27,7 @@ def contact_detail(id: UUID, session: Session = Depends(get_db)):
 
 @contact_router.put("/{id}", response_model=ContactShape)
 def update_contact(id: UUID, contact_data: ContactShape, session: Session = Depends(get_db)):
+    
     updated = ContactQueryService.update(session, id, contact_data.model_dump(exclude_unset=True))
     if not updated:
         raise HTTPException(status_code=404, detail="Contact not found")

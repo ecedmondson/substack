@@ -1,9 +1,9 @@
 
-from database.models.forwarding.contact import ContactShape
-from database.models.mixins.created_timestamped import \
+from api.schema.forwarding.contact import ContactShape
+from api.schema.mixins.created_timestamped import \
     CreatedTimestampedPydanticMixin
-from database.models.mixins.primary_key import UUIDPrimaryKeyPydanticMixin
-from database.models.mixins.pydantic_base import PydanticBase
+from api.schema.mixins.primary_key import UUIDPrimaryKeyPydanticMixin
+from api.schema.pydantic_base import PydanticBase
 
 
 class MessageRequest(PydanticBase):

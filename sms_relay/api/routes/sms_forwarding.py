@@ -2,10 +2,9 @@ from typing import List
 from uuid import UUID
 
 from api.base import make_router_prefix_pattern
+from api.schema.message import (MessageListResponse, MessageRequest,
+                                MessageResponse)
 from api.security.verify_my_iphone import verify_my_iphone_request
-from database.models.forwarding.message import (MessageListResponse,
-                                                MessageRequest,
-                                                MessageResponse)
 from database.query.base import get_db
 from database.query.message import ForwardedMessageQueryService
 from fastapi import APIRouter, Depends
