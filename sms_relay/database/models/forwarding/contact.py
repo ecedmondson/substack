@@ -34,6 +34,12 @@ class Contact(DeclarativeBase, UUIDPrimaryKey):
     phone_numbers: Mapped[List["PhoneNumber"]] = relationship('PhoneNumber', back_populates='contact')
     messages: Mapped[List["ForwardedMessage"]] = relationship('ForwardedMessage', back_populates='contact')
 
+    rules: Mapped[List["ContactRuleConfig"]] = relationship(
+        back_populates="contact",
+        lazy="selectin",
+        cascade="all, delete-orphan",
+    )
+
 class ContactShape(UUIDPrimaryKeyPydanticMixin):
     first_name: Optional[str]
     last_name: Optional[str]
