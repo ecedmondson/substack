@@ -7,6 +7,7 @@ const ContactDetailViewer = () => {
     selectedContact,
     deselectContact,
     startEditing,
+    startConfiguringRules,
   } = useContacts();
 
   const {
@@ -20,6 +21,7 @@ const ContactDetailViewer = () => {
       <div className="contact-detail-header">
         <h2>Contact Detail</h2>
         <div className="buttons-container">
+        <button onClick={startConfiguringRules} className="rules-button">Relay Config</button>
           <button onClick={startEditing} className="edit-button">Edit</button>
           <button onClick={deselectContact} className="back-button">← Back</button>
         </div>

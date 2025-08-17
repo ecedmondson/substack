@@ -8,10 +8,18 @@ from api.schema.pydantic_base import PydanticBase
 class RuleShape(UUIDPrimaryKeyPydanticMixin):
     category: str
 
+class ContactRuleConfigRuleShape(PydanticBase):
+    enabled: bool
+    rule_id: UUID
+    config_id: UUID
+
 class ContactRuleConfigShape(UUIDPrimaryKeyPydanticMixin):
-    id: UUID
-    rule_links: Optional[list[RuleShape]] = None
+    rule_links: Optional[list[ContactRuleConfigRuleShape]] = None
 
 class CreateRulePayload(PydanticBase):
     rule_id: UUID
     config_id: UUID
+
+class DisableRulePayload(PydanticBase):
+    config_id: UUID
+    rule_id: UUID

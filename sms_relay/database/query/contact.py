@@ -2,6 +2,7 @@ from typing import Optional
 from uuid import UUID
 
 from database.models.forwarding.contact import Contact, PhoneNumber
+from database.models.relay.rule import ContactRuleConfig
 from database.query.contact_rule_config import ContactRuleConfigQueryService
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
@@ -59,9 +60,7 @@ class ContactQueryService:
 
         if with_config:
             query = query.options(
-                selectinload(Contact.rules)
-                .selectinload("rule_links")
-                .selectinload("rule")
+                selectinload(Contact.rules).selectinload(ContactRuleConfig.rule_links)
             )
 
         return query.filter(Contact.id == pkid).one_or_none()

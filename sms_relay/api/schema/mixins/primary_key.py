@@ -1,7 +1,7 @@
 from typing import Optional
 from uuid import UUID as UUIDTyping
 
-from database.models.mixins.pydantic_base import PydanticBase
+from api.schema.pydantic_base import PydanticBase
 from pydantic import Field
 
 

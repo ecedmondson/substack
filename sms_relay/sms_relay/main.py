@@ -1,13 +1,13 @@
+
 from api.routes.contact import contact_router
+from api.routes.relay_rule import relay_router
 from api.routes.sms_forwarding import (forwarding_router,
                                        verify_my_iphone_router)
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
-from fastapi import Request
 from fastapi.logger import logger
-import traceback
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from settings.server_settings import ServerSettings
 
 app = FastAPI()
@@ -37,3 +37,4 @@ app.add_middleware(
 app.include_router(forwarding_router)
 app.include_router(verify_my_iphone_router)
 app.include_router(contact_router)
+app.include_router(relay_router)

@@ -21,7 +21,7 @@ export const useContactList = () => {
 export const useContactDetail = (id) => {
   return useQuery({
     queryKey: ['contact', id],
-    queryFn: () => fetchJSON(`${API_BASE}/${id}`),
+    queryFn: () => fetchJSON(`${API_BASE}/${id}?with_config=true`),
     enabled: !!id,
   });
 };

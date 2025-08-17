@@ -5,12 +5,14 @@ import NoData from '~/shared/components/NoData';
 import LoadingSpinner from '~/shared/components/Loader';
 import ContactDetailViewer from './Viewer';
 import ContactDetailForm from './Form';
+import ContactRelayConfigForm from './Config';
 import './styles.less';
 
 const ContactDetailManager = () => {
   const {
     selectedContact,
     isEditing,
+    isConfiguringRules,
   } = useContacts();
 
   const {
@@ -24,6 +26,9 @@ const ContactDetailManager = () => {
   if (isError) return <ErrorMessage />;
 
   if(isEditing) return <ContactDetailForm contact={contactData} />;
+  if(isConfiguringRules) {
+    return <ContactRelayConfigForm contact={contactData} />;
+  }
   return <ContactDetailViewer />;
 };
 

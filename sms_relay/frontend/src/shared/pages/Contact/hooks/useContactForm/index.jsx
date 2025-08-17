@@ -21,7 +21,6 @@ const serializeContact = (contact, formValues) => {
     number: entry.number
     }))
 };
-console.log('serializdd', data);
 return data;
 };
   

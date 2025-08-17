@@ -6,6 +6,7 @@ from database.models.base import DeclarativeBase
 from database.models.forwarding.contact import Contact
 from database.models.mixins.primary_key import UUIDPrimaryKey
 from sqlalchemy import UUID as SQLUUID
+from sqlalchemy import Boolean
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -31,6 +32,10 @@ class ContactRuleConfigRule(DeclarativeBase):
     )
     rule_id: Mapped[UUID] = mapped_column(
         ForeignKey("rule_type.id"), primary_key=True
+    )
+
+    enabled: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=True
     )
 
     config: Mapped["ContactRuleConfig"] = relationship(back_populates="rule_links")

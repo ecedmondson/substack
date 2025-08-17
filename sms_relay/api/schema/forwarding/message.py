@@ -1,6 +1,6 @@
 
 from api.schema.forwarding.contact import ContactShape
-from api.schema.mixins.created_timestamped import \
+from api.schema.mixins.create_timestamped import \
     CreatedTimestampedPydanticMixin
 from api.schema.mixins.primary_key import UUIDPrimaryKeyPydanticMixin
 from api.schema.pydantic_base import PydanticBase

@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from database.models.forwarding.contact import Contact
-from database.models.forwarding.message import ForwardedMessage, MessageRequest
+from database.models.forwarding.message import ForwardedMessage
 from database.query.contact import ContactQueryService
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -43,7 +43,7 @@ class ForwardedMessageQueryService:
         ).scalar_one_or_none()
 
     @classmethod
-    def create_forwarded_message(cls, session: Session, incoming_message: MessageRequest) -> ForwardedMessage:
+    def create_forwarded_message(cls, session: Session, incoming_message) -> ForwardedMessage:
         contact = ContactQueryService.get_or_create(session, incoming_message.sender)
 
         message = ForwardedMessage(
