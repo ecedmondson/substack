@@ -14,7 +14,4 @@ class TelnyxClient:
     
     def get_message(self, uuid):
         return telnyx.Message.retrieve(uuid)
-
-client = TelnyxClient()
-
-print(client.get_message("8b622800-64f7-4513-8491-9440136d33af"))
+    

@@ -24,6 +24,7 @@ class Contact(DeclarativeBase, UUIDPrimaryKey):
     note: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     phone_numbers: Mapped[List["PhoneNumber"]] = relationship('PhoneNumber', back_populates='contact')
+    threads: Mapped[list["ConversationThread"]] = relationship("ConversationThread", back_populates="contact")
     messages: Mapped[List["ForwardedMessage"]] = relationship('ForwardedMessage', back_populates='contact')
 
     rules: Mapped[List["ContactRuleConfig"]] = relationship(

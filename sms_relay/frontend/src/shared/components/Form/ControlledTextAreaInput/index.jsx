@@ -35,6 +35,7 @@ const ControlledTextAreaInput = ({
         dataTestId={name}
         showCharacterCount={showCharacterCount}
         maxLength={maxLength}
+        sx={{ width: "100%" }}
       />
     </div>
   );

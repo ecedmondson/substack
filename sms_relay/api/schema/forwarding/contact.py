@@ -19,4 +19,7 @@ class ContactShape(UUIDPrimaryKeyPydanticMixin):
     phone_numbers: Optional[List[PhoneNumberShape]] = None
     rules: Optional[List[ContactRuleConfigShape]] = None
 
-
+class ContactSummary(UUIDPrimaryKeyPydanticMixin):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    source: str = "external"

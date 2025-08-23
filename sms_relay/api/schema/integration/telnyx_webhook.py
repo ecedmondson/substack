@@ -25,4 +25,6 @@ class TelnyxPayloadToMessage(PydanticBase):
     sender: str
     date: datetime
     relayed: bool = True
+    device: bool = False
     integration: UUID
+    integration_contact_id: UUID

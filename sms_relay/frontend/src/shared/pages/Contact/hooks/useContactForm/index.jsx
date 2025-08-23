@@ -28,7 +28,6 @@ return data;
 const useContactForm = ({ contact }) => {
   const { mutate: putContact } = useUpdateContact();
   const contactValues = deserializeContact(contact);
-  console.log('contactValues', contactValues);
 
   const formMethods = useForm({
     mode: 'onBlur',

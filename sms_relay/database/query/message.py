@@ -1,4 +1,6 @@
+from datetime import datetime
 from uuid import UUID
+from zoneinfo import ZoneInfo
 
 from database.models.forwarding.contact import Contact
 from database.models.forwarding.message import ForwardedMessage
@@ -52,9 +54,63 @@ class ForwardedMessageQueryService:
             contact=contact,
             relayed=incoming_message.relayed,
             integration_id=incoming_message.integration,
+            integration_contact_id=incoming_message.integration_contact_id,
+            device=incoming_message.device,
         )
         session.add(message)
         session.commit()
         session.refresh(message)
+        return message
+    
+    @classmethod
+    def create_integration_message(cls, session: Session, outgoing_message) -> ForwardedMessage:
+        message = ForwardedMessage(
+            message=outgoing_message.message,
+            date=outgoing_message.date,
+            integration_contact_id=outgoing_message.integration_contact_id,
+            thread_id=outgoing_message.thread_id,
+        )
+        session.add(message)
+        session.commit()
+        session.refresh(message)
+        return message
+    
+    @classmethod
+    def mark_message_as_sent_to_integration(cls, session: Session, message_id) -> ForwardedMessage:
+        message = session.get(ForwardedMessage, message_id)
+        if not message:
+            raise ValueError(f"ForwardedMessage {message_id} not found")
+
+        message.delivery_confirmed = datetime.now(tz=ZoneInfo('UTC'))
+        session.add(message)
+        session.commit()
+        session.refresh(message)
+
+        return message
+    
+    @classmethod
+    def message_thread(cls, session: Session, thread_id: UUID, offset: int = 0, page_size: int = 5) -> list[ForwardedMessage]:
+        stmt = (
+            select(ForwardedMessage)
+            .where(ForwardedMessage.thread_id == thread_id)
+            .order_by(ForwardedMessage.date)
+            .offset(offset)
+            .limit(page_size)
+        )
+        return session.execute(stmt).scalars().all()
+
+    @classmethod
+    def assign_thread(
+        cls, session: Session, message_id: int, thread_id: int
+    ) -> ForwardedMessage:
+        message = session.get(ForwardedMessage, message_id)
+        if not message:
+            raise ValueError(f"ForwardedMessage {message_id} not found")
+
+        message.thread_id = thread_id
+        session.add(message)
+        session.commit()
+        session.refresh(message)
+
         return message
 

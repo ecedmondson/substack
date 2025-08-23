@@ -9,21 +9,20 @@ from sqlalchemy.orm import Session
 
 class ContactRuleConfigQueryService:
     @classmethod
-    def add_to_session(cls, session: Session, contact) -> ContactRuleConfig:
+    def flush_to_session(cls, session: Session, contact) -> ContactRuleConfig:
         config = ContactRuleConfig(
             contact_id=contact.id
         )
-        session.add(
-            ContactRuleConfig(
-                contact_id=contact.id
-            )
-        )
+        session.add(config)
+        session.flush()
         return config
 
     @classmethod
     def create(cls, session: Session, contact: Contact, commit=True) -> ContactRuleConfig:
-        cls.add_to_session(session, contact)
+        contact_rule_config = cls.flush_to_session(session, contact)
         session.commit()
+        session.refresh(contact_rule_config)
+        return contact_rule_config
 
     @classmethod
     def add_rule_to_config(

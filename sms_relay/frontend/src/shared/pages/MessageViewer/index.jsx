@@ -1,4 +1,4 @@
-import { useMessagesList } from '~/api/message';
+
 import Layout from '~/shared/components/Layout';
 import MessageViewer from './components/Viewer';
 import ErrorMessage from '~/shared/components/ErrorMessage';
