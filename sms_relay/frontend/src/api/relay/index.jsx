@@ -11,9 +11,6 @@ const fetchJSON = async (url, options = {}) => {
   return res.json();
 };
 
-// -------------------------
-// Fetch all rules
-// -------------------------
 export const useRuleList = () => {
   return useQuery({
     queryKey: ['rules'],
@@ -21,9 +18,6 @@ export const useRuleList = () => {
   });
 };
 
-// -------------------------
-// Add a rule to a contact config
-// -------------------------
 export const useAddRuleToConfig = (contactId) => {
   const queryClient = useQueryClient();
   return useMutation({

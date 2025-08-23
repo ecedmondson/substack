@@ -2,19 +2,6 @@ import { useController, useFormContext } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import './styles.less';
 
-/**
- * React Hook From Controlled Text Input
- * @param {string} name
- * @param {boolean} autoFocus
- * @param {string} label
- * @param {string} placeholder
- * @param {string} helperText
- * @param {number} maxLength
- * @param {function} onChange
- * @param {object} rules
- * @see {Documentation} https://react-hook-form.com/docs/usecontroller
- * @returns {React.Component}
- */
 const ControlledTextInput = ({
   name,
   autoFocus,

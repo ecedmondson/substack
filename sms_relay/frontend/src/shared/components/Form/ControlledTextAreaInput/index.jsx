@@ -1,14 +1,6 @@
 import { useController, useFormContext } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 
-/**
- * React Hook From Controlled TextArea Input
- * @param {string} name
- * @param {string} label
- * @param {object} rules
- * @see {Documentation} https://react-hook-form.com/docs/usecontroller
- * @returns {React.Component}
- */
 const ControlledTextAreaInput = ({
   name,
   autoFocus,

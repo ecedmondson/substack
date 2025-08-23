@@ -3,16 +3,6 @@ import { useController, useFormContext } from 'react-hook-form';
 import Switch from '@mui/material/Switch';
 import styles from './styles.module.less';
 
-/**
- * React Hook From Controlled Switch Input
- * @param {string} name
- * @param {string} label
- * @param {string} ariaLabel
- * @param {object} rules
- * @see {Documentation} https://react-hook-form.com/docs/usecontroller
- * @returns {React.Component}
- */
-
 const ControlledSwitchInput = ({ name, label, ariaLabel, rules, disabled }) => {
   const { control } = useFormContext();
   const {
