@@ -50,6 +50,8 @@ class ForwardedMessageQueryService:
             message=incoming_message.message,
             date=incoming_message.date,
             contact=contact,
+            relayed=incoming_message.relayed,
+            integration_id=incoming_message.integration,
         )
         session.add(message)
         session.commit()

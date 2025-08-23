@@ -1,5 +1,5 @@
 
-from database.models.relay.rule import ContactRuleConfigRule
+from database.models.relay.contact_relay import ContactRuleConfigRule
 from sqlalchemy.orm import Session
 
 

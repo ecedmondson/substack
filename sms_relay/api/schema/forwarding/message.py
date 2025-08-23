@@ -1,4 +1,6 @@
 
+from typing import Optional
+
 from api.schema.forwarding.contact import ContactShape
 from api.schema.mixins.create_timestamped import \
     CreatedTimestampedPydanticMixin
@@ -10,6 +12,8 @@ class MessageRequest(PydanticBase):
     message: str
     sender: str
     date: str
+    relayed: bool = False
+    integration: Optional[str] = None
 
 class MessageResponse(UUIDPrimaryKeyPydanticMixin, CreatedTimestampedPydanticMixin):
     message: str

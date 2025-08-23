@@ -1,72 +1,48 @@
 from enum import Enum
 from typing import List
-from uuid import UUID
 
 from database.models.base import DeclarativeBase
-from database.models.forwarding.contact import Contact
 from database.models.mixins.primary_key import UUIDPrimaryKey
-from sqlalchemy import UUID as SQLUUID
-from sqlalchemy import Boolean
 from sqlalchemy import Enum as SQLEnum
-from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
+class RuleType(Enum):
+    CONTACT = "CONTACT"
+    EXTERNAL = "EXTERNAL"
+    SYSTEM = "SYSTEM"
+
 class ContactRuleCategories(Enum):
-    ENABLED = "ENABLED"
-    ALWAYS_FORWARD = "ALWAYS_FORWARD"
-    AUTODELETE = "AUTODELETE"
-    BUSINESS_HOURS_FORWARD = "BUSINESS_HOURS_FORWARD"
+    DISABLED = "DISABLED"
+    DISPLAY_BUSINESS_HOURS_ONLY = "BUSINESS_HOURS_ONLY"
     DISPLAY = "DISPLAY"
+    CLEANUP = "CLEANUP"
 
     @staticmethod
     def values():
         return [cat.value for cat in ContactRuleCategories]
 
 
-class ContactRuleConfigRule(DeclarativeBase):
-    __tablename__ = "contact_rule_config_rules"
-
-    config_id: Mapped[UUID] = mapped_column(
-        ForeignKey("contact_rule_config.id"), primary_key=True
-    )
-    rule_id: Mapped[UUID] = mapped_column(
-        ForeignKey("rule_type.id"), primary_key=True
-    )
-
-    enabled: Mapped[bool] = mapped_column(
-        Boolean, nullable=False, default=True
-    )
-
-    config: Mapped["ContactRuleConfig"] = relationship(back_populates="rule_links")
-    rule: Mapped["ContactRule"] = relationship(back_populates="config_links")
-
-
 class ContactRule(DeclarativeBase, UUIDPrimaryKey):
-    __tablename__ = "rule_type"
+    __tablename__ = "contact_rule_type"
 
     category: Mapped[ContactRuleCategories] = mapped_column(
         SQLEnum(ContactRuleCategories, name="contact_rule_categories"),
         nullable=False,
     )
 
-    config_links: Mapped[List[ContactRuleConfigRule]] = relationship(
+    rule_type: Mapped[RuleType] = mapped_column(
+        SQLEnum(RuleType, name="rule_type_enum"),
+        nullable=False,
+        default=RuleType.CONTACT,
+        server_default="CONTACT",
+    )
+
+    config_links: Mapped[List['ContactRuleConfigRule']] = relationship( # noqa: F821
         back_populates="rule",
         lazy="selectin",
         cascade="all, delete-orphan",
     )
 
-
-class ContactRuleConfig(DeclarativeBase, UUIDPrimaryKey):
-    __tablename__ = "contact_rule_config"
-
-    contact_id: Mapped[UUID] = mapped_column(
-        SQLUUID(as_uuid=True), ForeignKey("contact.id"), nullable=False
-    )
-    contact: Mapped["Contact"] = relationship(back_populates="rules")
-
-    rule_links: Mapped[List[ContactRuleConfigRule]] = relationship(
-        back_populates="config",
-        lazy="selectin",
-        cascade="all, delete-orphan",
-    )
+#class SystemRule(DeclarativeBase, UUIDPrimaryKey):
+#    __tablename__ = "system_rule_type"

@@ -2,7 +2,7 @@ from typing import Optional
 from uuid import UUID
 
 from database.models.forwarding.contact import Contact, PhoneNumber
-from database.models.relay.rule import ContactRuleConfig
+from database.models.relay.contact_relay import ContactRuleConfig
 from database.query.contact_rule_config import ContactRuleConfigQueryService
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
@@ -41,9 +41,15 @@ def update_phone_numbers(session, contact, phone_numbers_data):
 
 class PhoneNumberQueryService:
     @classmethod
-    def create(cls, session: Session, phone_number: str, contact: Contact) -> PhoneNumber:
+    def flush_to_session(cls, session: Session, phone_number: str, contact: Contact) -> PhoneNumber:
         phone = PhoneNumber(number=phone_number, contact=contact)
         session.add(phone)
+        session.flush()
+        return phone
+
+    @classmethod
+    def create(cls, session: Session, phone_number: str, contact: Contact) -> PhoneNumber:
+        phone = cls.flush_to_session(session, phone_number, contact)
         session.commit()
         session.refresh(phone)
         return phone
@@ -118,12 +124,22 @@ class ContactQueryService:
         session.refresh(contact)
         return contact
 
+    @classmethod
+    def flush_to_session(cls, session: Session, contact_data: dict) -> Contact:
+        contact = Contact(**contact_data)
+        session.add(contact)
+        session.flush()
+        return contact
+    
+    @classmethod
+    def _flush_with_dependencies(cls, session: Session, contact_data: dict) -> Contact:
+        contact = cls.flush_to_session(session, contact_data)
+        ContactRuleConfigQueryService.flush_to_session(session, contact)
+        return contact
 
     @classmethod
     def create(cls, session: Session, contact_data: dict) -> Contact:
-        contact = Contact(**contact_data)
-        session.add(contact)
-        ContactRuleConfigQueryService.add_to_session(session, contact)
+        contact = cls._flush_with_dependencies(session, contact_data)
         session.commit()
         session.refresh(contact)
         return contact
@@ -142,13 +158,15 @@ class ContactQueryService:
         if contact:
             return contact
 
-        contact = Contact(
-            first_name="Unknown",
-            note=f"Auto-created with new sender number {sender_phone_number!r}.",
+        contact = cls._flush_with_dependencies(
+            session, 
+            {
+                "first_name": "Unknown Contact", "note": f"Auto-created with new sender number {sender_phone_number!r}."
+            }
         )
-        session.add(contact)
         session.flush()
 
-        PhoneNumberQueryService.create(session, sender_phone_number, contact)
+        PhoneNumberQueryService.flush_to_session(session, sender_phone_number, contact)
         session.commit()
+        session.refresh(contact)
         return contact

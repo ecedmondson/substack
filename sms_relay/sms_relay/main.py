@@ -1,5 +1,6 @@
 
 from api.routes.contact import contact_router
+from api.routes.integrations import integration_router
 from api.routes.relay_rule import relay_router
 from api.routes.sms_forwarding import (forwarding_router,
                                        verify_my_iphone_router)
@@ -38,3 +39,4 @@ app.include_router(forwarding_router)
 app.include_router(verify_my_iphone_router)
 app.include_router(contact_router)
 app.include_router(relay_router)
+app.include_router(integration_router)

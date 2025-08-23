@@ -1,8 +1,9 @@
 from uuid import UUID
 
 from database.models.forwarding.contact import Contact
-from database.models.relay.rule import (ContactRule, ContactRuleConfig,
-                                        ContactRuleConfigRule)
+from database.models.relay.contact_relay import (ContactRuleConfig,
+                                                 ContactRuleConfigRule)
+from database.models.relay.rule import ContactRule
 from sqlalchemy.orm import Session
 
 
