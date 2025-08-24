@@ -1,4 +1,7 @@
 import os
+import re
+import json
+import requests
 from functools import cached_property
 
 from transformers import AutoTokenizer, AutoModelForCausalLM, PreTrainedModel
@@ -115,20 +118,131 @@ class OllamaModelInterface(ModelInterface):
     def model(self):
         return AutoModelForCausalLM.from_pretrained(self.config.org_path)
 
+    def chunks(self, text, max_chars=1000):
+        return [text[i:i+max_chars] for i in range(0, len(text), max_chars)]
+
+    def semantic_chunks(self, text, max_chars=3500) -> dict:
+        def preprocess_paragraphs(paragraphs, min_length=150):
+            grouped = []
+            current = ""
+            for para in paragraphs:
+                para = para.strip()
+                if not para:
+                    continue
+                if len(current) + len(para) < min_length:
+                    current += " " + para
+                else:
+                    if current:
+                        grouped.append(current.strip())
+                    current = para
+            if current:
+                grouped.append(current.strip())
+            return grouped
+
+        paragraphs = re.split(r'\n\s*\n', text.strip())
+        paragraphs = preprocess_paragraphs(paragraphs)
+        
+        chunks = {}
+        current_chunk = ""
+        index = 0
+
+        for para in paragraphs:
+            if len(current_chunk) + len(para) + 2 < max_chars:
+                current_chunk += para + "\n\n"
+            else:
+                if current_chunk:
+                    chunks[index] = current_chunk.strip()
+                    index += 1
+                current_chunk = para + "\n\n"
+
+        if current_chunk:
+            chunks[index] = current_chunk.strip()
+
+        return chunks
+
+
+
+    def ollama_prompt(self, prompt_text):
+        # url = f"http://localhost:12345/models/{self.config.MODEL_NAME}"
+        url = "http://127.0.0.1:12345/api/generate"
+        headers = {"Content-Type": "application/json"}
+        payload = {
+            "model": self.config.MODEL_NAME,
+            "prompt": prompt_text,
+            "stream": False,
+            "max_token": 2000,
+            "temperature": 0.6,
+        }
+        try:
+            response = requests.post(url, json=payload, headers=headers)
+            response.raise_for_status()
+            data = response.json()
+            result = data.get("response", "LLM Response not found.")
+            print(result)
+            return result
+        except requests.RequestException as e:
+            print(f"Ollama API request failed: {e}")
+            return ""
+
+    def summarize_prompt(self, message: str, chunk_index: int, total_chunk_count: int) -> str:
+        return f"""
+            You will analyze the following text selection. Please do the following:
+
+            1. Provide a concise summary of the selection.
+            2. Identify and extract key quotes (exact language or phrases) that indicate **authoritarian parenting**.
+            3. Identify and extract key quotes that indicate **non-authoritarian parenting models** (such as authoritative, permissive, or other styles).
+            4. Identify and extract key quotes that reflect **societal constructs or worldviews** mentioned or implied in the text.
+            5. Present your results in a clearly formatted output with headings and bullet points.
+
+            Analyze the following section of a longer text. This may be part of a larger argument. Be cautious about attributing positions to the author unless clearly stated. Look for signs of ongoing critique, support, or neutrality.
+            Here is the order of this selection: chunk {chunk_index} out of { total_chunk_count} chunks
+
+            Here is the text selection:
+
+            ```
+            {message}
+            ```
+
+            ---
+
+            Output format:
+
+            Summary:
+            - [Concise summary here]
+
+            Key quotes indicating authoritarian parenting:
+            - "[Quote 1]"
+            - "[Quote 2]"
+            - ...
+
+            Key quotes indicating non-authoritarian parenting models:
+            - "[Quote 1]"
+            - "[Quote 2]"
+            - ...
+
+            Key quotes indicating societal constructs or worldviews:
+            - "[Quote 1]"
+            - "[Quote 2]"
+            - ...
+        """
 
     def prompt(self, message: str):
-        chunks = self.chunks(message, max_tokens=500)
-        summaries = []
-        for chunk in chunks:
-            print("Getting summary...")
-            prompt_text = f"Summarize the following text:\n\n{chunk}"
-            summary = ollama_prompt(prompt_text, model=self.config.model_repo)
-            summaries.append(summary.strip())
+        chunks = self.semantic_chunks(message, max_chars=3500)
+        summaries = {}
+        total_chunks = max(list(chunks.keys()))
+        for idx, chunk in chunks.items():
+            print(f"Getting summary {idx}/{total_chunks}...")
+            prompt_text = f"Summarize the following text. If there is any language, phrasing, or conceptual models of authoritarian parenting or child abuse, draw attention to those in the summary:\n\n{chunk}"
+            summary = self.ollama_prompt(self.summarize_prompt(prompt_text, idx, total_chunks))
+            summaries[idx] = summary.strip()
         return summaries
 
     def summarize_pdf(self, pdf_path):
         pdf_text = extract_text_from_pdf(pdf_path)
-        return self.prompt(pdf_text)
+        results = f"{pdf_path.split('.')[0]}_results.json"
+        summary_results = self.prompt(pdf_text)
+        with open(results, "w") as f:
+            json.dump(summary_results, f, indent=4)
 
 def model_interface_factory(model_type: ModelInterfaceType) -> ModelInterface:
     return ModelInterface.MODEL_REGISTRY[model_type]
