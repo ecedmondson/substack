@@ -1,0 +1,12 @@
+[project]
+name = "transit"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib>=3.10.7",
+    "polars>=1.35.2",
+    "scikit-learn>=1.7.2",
+    "seaborn>=0.13.2",
+]
